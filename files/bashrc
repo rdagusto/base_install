@@ -1,0 +1,16 @@
+# .bashrc
+
+# Source global definitions
+if [ -f /etc/bashrc ]; then
+        . /etc/bashrc
+fi
+
+# Uncomment the following line if you don't like systemctl's auto-paging feature:
+# export SYSTEMD_PAGER=
+
+# User specific aliases and functions
+JAVA_HOME=/opt/java/bin
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/opt/java/bin:/usr/bin
+export JAVA_HOME PATH
+alias tomstart='/opt/tomcat/bin/startup.sh'
+alias tomstop='/opt/tomcat/bin/shutdown.sh'

@@ -1,0 +1,45 @@
+# Functional Environment Variables
+env: 'functional'
+
+### aws Variables
+awscli_version: 1.15.75
+awscli_users:
+  - username: ec2-user
+    access_key_id: AKIAJHUWPT5BIUSCYWXA
+    secret_access_key: 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
+    region: us-east-1
+    output: text
+
+### CHANGE
+pg_url: "uat01-23-rds01.cqqndot5owot.us-east-1.rds.amazonaws.com"
+customer_id: "ni"
+customer_url: "ni.uat.aws.vertexinc.com"
+
+
+#### update VE versions
+ve_version: "2018.2.0.01.00"
+old_ve_version: "2018.1.2.02.00"
+#old_ve_version: "2018.1.2.02.00"
+
+### STATIC For Cluster
+s3_bucket: "dev-util-backup-02/config"
+postgres_db: "postgres_db.sql.j2"
+postgres_tablespace:  "postgres_tablespace.sql.j2"
+hdfs_url: "uat01-master02.uat.aws.vertexinc.com"
+hive_url: "uat01-master02.uat.aws.vertexinc.com"
+ranger_url: "172.24.41.36"
+presto_url: "uat01-master01.uat.aws.vertexinc.com"
+cluster_name: "uat01"
+
+javaopts_xms_xmx: 7
+# used in catalina.sh,
+java_home: /opt/java
+which_env: "uat" # options: prod, uat, stage, poc , p1-4
+home_dir: /home/centos/
+ve_user: 'centos'
+
+### techstack
+java_dir: 'jdk1.8.0_181'
+java_version: '8u181'
+tomcat_dir: 'apache-tomcat-8.5.32'
+tomcat_version: '8.5.32'

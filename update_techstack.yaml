@@ -1,0 +1,52 @@
+---
+- name: TOMCAT Get running processes
+  shell: "ps -ef | grep -v grep | grep -w [t]omcat | awk '{print $2}'"
+  register: running_processes
+
+- name: TOMCAT Kill running processes
+  shell: "kill {{ item }}"
+  with_items: "{{ running_processes.stdout_lines }}"
+
+- wait_for:
+    path: "/proc/{{ item }}/status"
+    state: absent
+  with_items: "{{ running_processes.stdout_lines }}"
+  ignore_errors: yes
+  register: killed_processes
+
+- name: TOMCAT Force kill stuck processes
+  shell: "kill -9 {{ item }}"
+  with_items: "{{ killed_processes.results | select('failed') | map(attribute='item') | list }}"
+  delay: 5
+
+# No longer needed with role based autentication
+#- name: Ensures .aws directory
+#  file: path=/root/.aws state=directory
+
+#- name: Copy aws config
+#  copy:
+#    src: files/config
+#    dest: /root/.aws/config
+
+- name: Update Java
+  import_tasks: update_java.yaml
+
+- name: Update Tomcat
+  import_tasks: update_tomcat.yaml
+  when: tomcat_version is defined
+
+- name: copy setenv.sh template file
+  template: src=templates/{{ env }}/setenv.sh.j2 dest=/opt/tomcat/bin/setenv.sh mode=755
+
+## Benchmark needed Tasks
+#- name: copy catalina.sh templates file
+#  template: src=templates/catalina.sh.j2 dest=/opt/tomcat/bin/catalina.sh mode=755
+
+#- name: copy server.xml templates file
+#  template: src=templates/{{ env }}/server.xml.j2 dest=/opt/tomcat/conf/server.xml mode=755
+
+#- name: copy web.xml templates file
+#  template: src=templates/web.xml.j2 dest=/opt/tomcat/conf/web.xml mode=755
+
+#- name: start tomcat
+#  command: nohup /opt/tomcat/bin/catalina.sh start

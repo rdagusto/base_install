@@ -1,0 +1,14 @@
+#.bash_profile
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+# User specific environment and startup programs
+
+JAVA_HOME=/opt/java/
+PATH=$PATH:$HOME/.local/bin:$HOME/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/home/root/.local/bin:/home/root/bin:/opt/java/bin:/usr/bin
+PWD=/home/root
+
+export PATH
+export JAVA_HOME

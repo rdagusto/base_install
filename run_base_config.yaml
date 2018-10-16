@@ -1,0 +1,38 @@
+---
+- hosts: ve-server
+  become: yes
+  gather_facts: yes
+  vars_files:
+    - group_vars/{{ environment }}/ve_vars.yaml
+
+  tasks:
+# TODO: Add logic to determine if ec2-user is already added
+     - name: Adding the ec2-user
+       user:
+         name: ec2-user
+         groups: adm,wheel,systemd-journal
+       become: yes
+     - name: Get pip script
+       get_url: 
+         url: "https://bootstrap.pypa.io/get-pip.py"
+         dest: /tmp/get-pip.py
+         mode: 774
+       register: runpip
+     - name: install pip
+       command: "python /tmp/get-pip.py"
+       when: runpip.changed
+#TODO: Add Logic to determine if awcli is already installed
+#     - include_role:
+#         name: vertex.awscli       
+     - name: Upgrading TechStack to new version 20182
+       import_tasks: update_techstack.yaml
+     - name: copy bashrc
+       copy: src=files/bashrc dest={{ home_dir }}/.bashrc mode=644
+     - name: copy bashrc
+       copy: src=files/bashrc dest={{ home_dir }}/.bashrc mode=644
+     - name: copy bash_profile
+       copy: src=files/bash_profile dest={{ home_dir }}/.bash_profile mode=644
+     - name: source bash_rc
+       shell: source {{ home_dir }}/.bashrc
+     - name: source bash_profile
+       shell: source {{ home_dir }}/.bash_profile

@@ -1,0 +1,38 @@
+---
+########### Download Java from S3 Bucket #############
+
+- name: import files from s3
+  command: aws s3 cp s3://{{ s3_bucket }}/{{ item }} /tmp/{{ item }} creates=/tmp/{{ item }}
+  with_items:
+    - jdk-{{ java_version }}-linux-x64.tar.gz
+
+############## Remove existing Java ####################
+- name: Check if java link Exists
+  stat:
+    path: /opt/java
+  register: java_sym
+
+- name: Remove old Java Directory
+  file:
+    path: /opt/java
+    state: absent
+  when: java_sym.stat.islnk is defined and java_sym.stat.islnk == False
+
+############## Java Installation #######################
+
+- name: extract java
+  unarchive:
+    src: /tmp/jdk-{{ java_version }}-linux-x64.tar.gz
+    dest: /opt
+    owner: root
+    group: root
+    remote_src: yes
+  become: yes
+
+- name: create java link
+  file:
+    src: /opt/{{ java_dir }}
+    dest: /opt/java
+    owner: root
+    group: root
+    state: link

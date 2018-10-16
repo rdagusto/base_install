@@ -1,0 +1,40 @@
+---
+
+########### Download Tomcat from S3 Bucket #############
+- name: import files from s3
+  command: aws s3 cp s3://{{ s3_bucket }}/{{ item }} /tmp/{{ item }} creates=/tmp/{{ item }}
+  with_items:
+    - apache-tomcat-{{ tomcat_version }}.tar.gz
+#  become_user: ec2-user
+
+############## Remove existing Tomcat ####################
+- name: Check if tomcat link Exists
+  stat:
+    path: /opt/tomcat
+  register: tomcat_sym
+  
+- name: Remove old Tomcat
+  file:
+    path: /opt/tomcat
+    state: absent
+  when: tomcat_sym.stat.islnk is defined and tomcat_sym.stat.islnk == False
+    
+############## Tomcat Installation #######################
+
+- name: extract tomcat
+  unarchive:
+    src: /tmp/apache-tomcat-{{ tomcat_version }}.tar.gz
+    dest: /opt
+    owner: "{{ ve_user }}"
+    group: "{{ ve_user }}"
+    remote_src: yes
+  become: yes
+   
+- name: create tomcat link
+  file:
+    src: /opt/{{ tomcat_dir }}
+    dest: /opt/tomcat
+    owner: "{{ ve_user }}"
+    group: "{{ ve_user }}"
+    state: link
+

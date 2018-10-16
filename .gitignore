@@ -1,0 +1,8 @@
+*.pyc
+*.retry
+*.zip
+id_rsa
+*.pub
+*.pem
+*.ppk
+*.git
