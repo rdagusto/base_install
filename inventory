@@ -2,7 +2,7 @@
 172.24.64.110
 #inventory behaviors - all groups
 [all:vars]
-ansible_become_method=sudo
-ansible_become=yes
+#ansible_become_method=sudo
+#ansible_become=yes
 # default for /etc/security/limits.conf
 ulimit_nofile=32768
