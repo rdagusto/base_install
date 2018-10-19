@@ -1,5 +1,5 @@
 [ve-server]
-$server1
+172.24.64.110
 #inventory behaviors - all groups
 [all:vars]
 ansible_become_method=sudo
