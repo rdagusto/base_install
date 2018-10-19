@@ -1,5 +1,5 @@
 ---
-- hosts: {{ ve-server }}
+- hosts: '172.24.64.110'
   become: yes
   gather_facts: yes
   vars_files:
