@@ -17,6 +17,7 @@
     path: /opt/java
     state: absent
   when: java_sym.stat.islnk is defined and java_sym.stat.islnk == False
+  become: yes
 
 ############## Java Installation #######################
 
