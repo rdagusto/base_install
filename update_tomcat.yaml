@@ -18,6 +18,7 @@
     path: /opt/tomcat
     state: absent
   when: tomcat_sym.stat.islnk is defined and tomcat_sym.stat.islnk == False
+  become: yes
     
 ############## Tomcat Installation #######################
 
@@ -37,4 +38,5 @@
     owner: "{{ ve_user }}"
     group: "{{ ve_user }}"
     state: link
+  become: yes
 
