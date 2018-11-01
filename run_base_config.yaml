@@ -21,6 +21,7 @@
      - name: install pip
        command: "python /tmp/get-pip.py"
        when: runpip.changed
+       become: yes
 #TODO: Add Logic to determine if awcli is already installed
 #     - include_role:
 #         name: vertex.awscli       
